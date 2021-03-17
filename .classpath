@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
-		<attributes>
-			<attribute name="module" value="true"/>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="/home/alex/eclipse-workspace/Farmacia/Biblioteca/all-themes-1.0.10.jar"/>
@@ -16,5 +11,14 @@
 	<classpathentry kind="lib" path="/home/alex/eclipse-workspace/Farmacia/Biblioteca/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="/home/alex/eclipse-workspace/Farmacia/Biblioteca/mysql-connector-java-5.1.39-bin.jar"/>
 	<classpathentry kind="lib" path="/home/alex/eclipse-workspace/Farmacia/Biblioteca/primefaces-4.0.jar"/>
+	<classpathentry kind="lib" path="/home/alex/JavaProjects/Sistema-Farmacia/WebContent/WEB-INF/lib/spring-beans-5.2.13.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/alex/JavaProjects/Sistema-Farmacia/WebContent/WEB-INF/lib/spring-core-5.2.13.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/alex/JavaProjects/Sistema-Farmacia/WebContent/WEB-INF/lib/spring-jcl-5.2.13.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/alex/JavaProjects/Sistema-Farmacia/WebContent/WEB-INF/lib/spring-web-5.2.13.RELEASE.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/di-spring-1.0.0.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/spring-context-5.2.13.RELEASE.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/jackson-core-lgpl-0.9.8.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/jackson-mapper-lgpl-0.9.8.jar"/>
+	<classpathentry kind="lib" path="Biblioteca/com.fasterxml.jackson.databind.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

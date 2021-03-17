@@ -1,15 +1,19 @@
 package br.com.farmacia.bean;
 
-import java.sql.SQLException;
+//import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.client.HttpClientErrorException;
 
-import br.com.farmacia.DAO.FornecedoresDAO;
+//import br.com.farmacia.DAO.FornecedoresDAO;
 import br.com.farmacia.domain.Fornecedores;
+import br.com.farmacia.restservice.AppConfig;
+import br.com.farmacia.restservice.FornecedoresClient;
 import br.com.farmacia.util.JSFUtil;
 
 @ManagedBean(name = "MBFornecedores")
@@ -20,14 +24,13 @@ public class FornecedoresBean {
 	private ArrayList<Fornecedores>itens;
 	private ArrayList<Fornecedores>itensFiltrados;
 	
-public Fornecedores getFornecedores() {
+	public Fornecedores getFornecedores() {
 		return fornecedores;
 	}
 
 	public void setFornecedores(Fornecedores fornecedores) {
 		this.fornecedores = fornecedores;
 	}
-
 
 	public ArrayList<Fornecedores> getItens() {
 		return itens;
@@ -46,83 +49,99 @@ public Fornecedores getFornecedores() {
 		this.itensFiltrados = itensFiltrados;
 	}
 
+	@PostConstruct
+	public void prepararPesquisa(){
+		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
-
-@PostConstruct
-public void prepararPesquisa(){
+		FornecedoresClient client = applicationContext.getBean(FornecedoresClient.class);
 	
-	
-	try {
-		FornecedoresDAO fdao = new FornecedoresDAO();
-		itens = fdao.listar();
+		try {
+			itens = client.getAllFornecedores();
+			//FornecedoresDAO fdao = new FornecedoresDAO();
+			//itens = fdao.listar();
+			
+		} catch (HttpClientErrorException e) {
+			JSFUtil.adicionarMensagemErro("ex.getMessage()");
+			e.printStackTrace();
+		} finally {
+			applicationContext.close();
+		}
 		
-	} catch (SQLException e) {
-		JSFUtil.adicionarMensagemErro("ex.getMessage()");
-		e.printStackTrace();
+	}
+
+	public void prepararNovo(){
+		fornecedores = new Fornecedores();
 	}
 	
-}
+	public void novo(){
+		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
-public void prepararNovo(){
-	fornecedores = new Fornecedores();
-}
-
-public void novo(){
-	
-	try {
-		FornecedoresDAO fdao = new FornecedoresDAO();
-		fdao.salvar(fornecedores);
+		FornecedoresClient client = applicationContext.getBean(FornecedoresClient.class);
 		
-		
-		itens = fdao.listar();
-		
-		
-		JSFUtil.adicionarMensagemSucesso("Fornecedor salvo com sucesso!");
-		
-	} catch (SQLException e) {
-		JSFUtil.adicionarMensagemErro("ex.getMessage()");
-		e.printStackTrace();
+		try {
+			/*FornecedoresDAO fdao = new FornecedoresDAO();
+			fdao.salvar(fornecedores);
+			
+			itens = fdao.listar();*/
+			client.addFornecedores(fornecedores);
+			itens = client.getAllFornecedores();
+			
+			
+			JSFUtil.adicionarMensagemSucesso("Fornecedor salvo com sucesso!");
+			
+		} catch (HttpClientErrorException e) {
+			JSFUtil.adicionarMensagemErro("ex.getMessage()");
+			e.printStackTrace();
+		} finally {
+			applicationContext.close();
+		}
 	}
-}
 
+	public void excluir(){
+		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
-
-public void excluir(){
-	try {
-		FornecedoresDAO fdao = new FornecedoresDAO();
-		fdao.excluir(fornecedores);
+		FornecedoresClient client = applicationContext.getBean(FornecedoresClient.class);
 		
-		
-		itens = fdao.listar();
-		
-		
-		JSFUtil.adicionarMensagemSucesso("Fornecedor excluido com sucesso!");
-		
-	} catch (SQLException e) {
-		JSFUtil.adicionarMensagemErro("Não é possível excluir um fornecedor que tenha um produto associado!");
-		e.printStackTrace();
+		try {
+			//FornecedoresDAO fdao = new FornecedoresDAO();
+			//fdao.excluir(fornecedores);
+			//itens = fdao.listar();
+			client.deleteFornecedores(fornecedores.getCodigo());
+			
+			itens = client.getAllFornecedores();
+			
+			JSFUtil.adicionarMensagemSucesso("Fornecedor excluido com sucesso!");
+			
+		} catch (HttpClientErrorException e) {
+			JSFUtil.adicionarMensagemErro("Nï¿½o ï¿½ possï¿½vel excluir um fornecedor que tenha um produto associado!");
+			e.printStackTrace();
+		} finally {
+			applicationContext.close();
+		}
 	}
-}
 
+	public void editar(){
+		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
 
-
-
-
-public void editar(){
-	try {
-		FornecedoresDAO fdao = new FornecedoresDAO();
-		fdao.editar(fornecedores);
-		
-		
-		itens = fdao.listar();
-		
-		
-		JSFUtil.adicionarMensagemSucesso("Fornecedor editado com sucesso!");
-		
-	} catch (SQLException e) {
-		JSFUtil.adicionarMensagemErro("ex.getMessage()");
-		e.printStackTrace();
+		FornecedoresClient client = applicationContext.getBean(FornecedoresClient.class);
+		try {
+			/*FornecedoresDAO fdao = new FornecedoresDAO();
+			fdao.editar(fornecedores);
+			
+			
+			itens = fdao.listar();*/
+			client.updateFornecedores(fornecedores);;
+			
+			itens = client.getAllFornecedores();
+			
+			
+			JSFUtil.adicionarMensagemSucesso("Fornecedor editado com sucesso!");
+			
+		} catch (HttpClientErrorException e) {
+			JSFUtil.adicionarMensagemErro("ex.getMessage()");
+			e.printStackTrace();
+		} finally {
+			applicationContext.close();
+		}
 	}
-}
-
 }
